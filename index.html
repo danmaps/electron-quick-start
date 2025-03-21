@@ -1,19 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
-    <link href="./styles.css" rel="stylesheet">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+<head>
+    <title>ArcGIS JS API with Electron</title>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/dark/main.css">
+    <script src="https://js.arcgis.com/4.27/"></script>
+    <style>
+        html, body, #viewDiv {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="viewDiv"></div>
+    <script>
+        require([
+            "esri/Map",
+            "esri/views/MapView",
+            "esri/widgets/Zoom",
+            "esri/widgets/Home"
+        ], function(Map, MapView, Zoom, Home) {
+            var map = new Map({
+                basemap: "streets-vector"
+            });
 
-    <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
-  </body>
+            var view = new MapView({
+                container: "viewDiv",
+                map: map,
+                center: [-119.4179, 36.7783], // Longitude, latitude of California
+                zoom: 6
+            });
+
+            var zoom = new Zoom({
+                view: view
+            });
+
+            var home = new Home({
+                view: view
+            });
+
+            view.ui.add(zoom, "top-left");
+            view.ui.add(home, "top-left");
+        });
+    </script>
+</body>
 </html>
